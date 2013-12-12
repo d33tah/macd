@@ -29,6 +29,7 @@ def load_known():
 
 def write_macs(macs, known, filename="index.html"):
     with open(filename, "w") as f:
+        f.write(time.strftime("%x %X<br/>\n<br/>\n"))
         for mac in macs:
             if mac in known:
                 f.write("%s<br/>\n" % known[mac])
