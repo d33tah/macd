@@ -50,9 +50,10 @@ def write_macs(macs, known, since, filename=OUTFILE):
             f.write("%s %s<br/>\n" % (name, since_msg))
 
 def cleanup_last_seen(macs, last_seen, since):
-    for mac in macs:
+    for mac in set(macs + since.keys()):
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            since[mac] = time.localtime()
+            del since[mac]
+    for mac in macs:
         last_seen[mac] = time.time()
 
 def main():
