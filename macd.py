@@ -4,8 +4,10 @@
 import subprocess
 import time
 import logging
+import collections
 
 NETWORK = "172.16.1.1/24"
+OUTFILE = "index.html"
 
 def get_macs(network, do_sudo=True):
     ret = []
@@ -28,7 +30,7 @@ def load_known():
             ret[mac] = name
     return ret
 
-def write_macs(macs, known, filename="index.html"):
+def write_macs(macs, known, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
         for mac in macs:
@@ -41,11 +43,13 @@ def write_macs(macs, known, filename="index.html"):
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
+    since = collections.defaultdict(time.time)
+    last_visible = {}
     while True:
         known = load_known()
         macs = get_macs(NETWORK)
         logging.info("%s" % macs)
-        write_macs(macs, known)
+        write_macs(macs, known, since)
         time.sleep(60)
 
 if __name__ == "__main__":
