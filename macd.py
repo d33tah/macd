@@ -44,10 +44,8 @@ def write_macs(macs, known, since, filename=OUTFILE):
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
         for mac in macs:
             since_msg = get_since_time(since, mac)
-            if mac in known:
-                f.write("%s %s<br/>\n" % (known[mac], since_msg))
-            else:
-                f.write("%s %s(?)<br/>\n" % (mac, since_msg))
+            name = known.get(mac, "%s(?)" % mac)
+            f.write("%s %s<br/>\n" % (name, since_msg))
 
 def cleanup_last_seen(macs, last_seen, since):
     for mac in macs:
