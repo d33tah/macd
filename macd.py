@@ -42,7 +42,7 @@ def get_since_time(since, mac):
 def write_macs(macs, known, since, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
-        for mac in macs + since.keys():
+        for mac in set(macs + since.keys()):
             since_msg = get_since_time(since, mac)
             name = known.get(mac, "%s(?)" % mac)
             if mac not in macs:
