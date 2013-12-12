@@ -53,8 +53,7 @@ def cleanup_last_seen(macs, last_seen, since):
     for mac in macs:
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
             since[mac] = time.localtime()
-        else:
-            last_seen[mac] = time.time()
+        last_seen[mac] = time.time()
 
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
