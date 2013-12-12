@@ -41,8 +41,8 @@ def write_macs(macs, known, filename="index.html"):
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
-    known = load_known()
     while True:
+        known = load_known()
         macs = get_macs(NETWORK)
         logging.info("%s" % macs)
         write_macs(macs, known)
