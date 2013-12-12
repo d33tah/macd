@@ -8,6 +8,7 @@ import collections
 
 NETWORK = "172.16.1.1/24"
 OUTFILE = "index.html"
+INTERVAL = 60
 
 def get_macs(network, do_sudo=True):
     ret = []
@@ -50,7 +51,7 @@ def main():
         macs = get_macs(NETWORK)
         logging.info("%s" % macs)
         write_macs(macs, known, since)
-        time.sleep(60)
+        time.sleep(INTERVAL)
 
 if __name__ == "__main__":
     main()
