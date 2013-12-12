@@ -34,6 +34,8 @@ def write_macs(macs, known, filename="index.html"):
         for mac in macs:
             if mac in known:
                 f.write("%s<br/>\n" % known[mac])
+            else:
+                f.write("%s (?)<br/>\n" % mac)
 
 
 def main():
