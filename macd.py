@@ -52,14 +52,14 @@ def write_macs(macs, known, since, filename=OUTFILE):
 def cleanup_last_seen(macs, last_seen, since):
     for mac in macs:
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            since[mac] = time.gmtime()
+            since[mac] = time.localtime()
         else:
             last_seen[mac] = time.time()
 
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
-    since = collections.defaultdict(time.gmtime)
+    since = collections.defaultdict(time.localtime)
     last_seen = {}
     while True:
         known = load_known()
