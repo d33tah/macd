@@ -5,7 +5,7 @@
 # Scans the FLL network, saving the MAC addresses of hosts that are up to
 # mac.txt file.
 
-$NETWORK="192.168.88.84/24"
+NETWORK="192.168.88.84/24"
 
 while sleep 60; do
     # perform a verbose discovery scan on the network without rDNS queries
