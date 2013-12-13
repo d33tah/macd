@@ -52,7 +52,7 @@ def write_macs(macs, known, since, filename=OUTFILE):
 def cleanup_last_seen(macs, last_seen, since):
     for mac in set(macs + since.keys()):
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            del since[mac]
+            since[mac] = time.localtime()
     for mac in macs:
         last_seen[mac] = time.time()
 
