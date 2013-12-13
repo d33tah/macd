@@ -1,0 +1,4 @@
+<FilesMatch "^(known\.txt|config\.php|macd\.py|macd\.log)$">
+  order allow,deny
+  deny from all
+</FilesMatch>
