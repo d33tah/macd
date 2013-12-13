@@ -44,24 +44,28 @@ def write_macs(macs, known, since, filename=OUTFILE):
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
         for mac in set(macs + since.keys()):
-            since_msg = get_since_time(since, mac)
             name = known.get(mac, "%s(?)" % mac)
             if mac not in macs:
                 name = "(!) " + name
+            if mac not in since:
+                since[mac] = time.localtime()
+                since_msg = ""
+            else:
+                since_msg = get_since_time(since, mac)
             f.write("%s %s<br/>\n" % (name, since_msg))
         f.write("</body>\n</html>")
 
 def cleanup_last_seen(macs, last_seen, since):
     for mac in set(macs + since.keys()):
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            since[mac] = time.localtime()
+            del since[mac]
     for mac in macs:
         last_seen[mac] = time.time()
 
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
-    since = collections.defaultdict(time.localtime)
+    since = {}
     last_seen = {}
     while True:
         known = load_known()
