@@ -9,7 +9,7 @@ import collections
 NETWORK = "172.16.1.1/24"
 OUTFILE = "index.html"
 INTERVAL = 60
-TIMEOUT = 60 * 30
+TIMEOUT = 60 * 5
 
 def get_macs(network, do_sudo=True):
     ret = []
