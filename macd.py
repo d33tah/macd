@@ -35,9 +35,9 @@ def load_known():
 def get_since_time(since, mac):
     since_time = since[mac]
     if time.strftime("%x") == time.strftime("%x", since_time):
-        return "(od %s)" % time.strftime("%X", since_time)
+        return "(od %s)" % time.strftime("%H:%M", since_time)
     else:
-        return "(od %s)" % time.strftime("%x %X", since_time)
+        return "(od %s)" % time.strftime("%x %H:%M", since_time)
 
 def write_macs(macs, known, since, filename=OUTFILE):
     with open(filename, "w") as f:
