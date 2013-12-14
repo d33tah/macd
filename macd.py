@@ -6,6 +6,9 @@ import time
 import logging
 import collections
 
+import locale
+locale.setlocale(locale.LC_TIME, '')
+
 NETWORK = "172.16.1.1/24"
 OUTFILE = "index.html"
 INTERVAL = 60
