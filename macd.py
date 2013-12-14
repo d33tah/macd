@@ -43,6 +43,16 @@ def load_known():
             ret[mac] = name
     return ret
 
+def load_ignored():
+    ret = []
+    try:
+        with open("ignored.txt") as f:
+            for mac in f.readlines():
+                ret += [mac.rstrip("\r\n")]
+    except IOError:
+        pass
+    return ret
+
 def get_since_time(since, mac):
     if mac not in since:
         since[mac] = time.localtime()
@@ -52,11 +62,14 @@ def get_since_time(since, mac):
     else:
         return "(%s %s)" % (_("since"), time.strftime("%x %H:%M", since_time))
 
-def write_macs(macs, known, since, filename=OUTFILE):
+def write_macs(macs, known, since, ignored, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
+        empty = True
         for mac in set(macs + since.keys()):
+            if mac in ignored:
+                continue
             name = known.get(mac, "%s(?)" % mac)
             if mac not in macs:
                 name = "(!) " + name
@@ -66,6 +79,9 @@ def write_macs(macs, known, since, filename=OUTFILE):
             else:
                 since_msg = get_since_time(since, mac)
             f.write("%s %s<br/>\n" % (name, since_msg))
+            empty = False
+        if empty:
+            f.write(_("Nobody was detected.\n"))
         f.write("</body>\n</html>")
 
 def cleanup_last_seen(macs, last_seen, since):
@@ -83,10 +99,11 @@ def main():
     last_seen = {}
     while True:
         known = load_known()
+        ignored = load_ignored()
         macs = get_macs(NETWORK)
         cleanup_last_seen(macs, last_seen, since)
         logging.info("%s" % macs)
-        write_macs(macs, known, since)
+        write_macs(macs, known, since, ignored)
         time.sleep(INTERVAL)
 
 if __name__ == "__main__":
