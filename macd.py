@@ -30,7 +30,8 @@ def get_macs(network, do_sudo=True):
     for line in output.split("\n"):
         if line.startswith("MAC"):
             mac = line.split()[2].lower()
-            ret += [mac]
+            if mac not in ret:
+                ret += [mac]
     return ret
 
 def load_known():
