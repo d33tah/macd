@@ -22,7 +22,7 @@ def get_macs(network, do_sudo=True):
     output = p.stdout.read()
     for line in output.split("\n"):
         if line.startswith("MAC"):
-            mac = line.split()[2]
+            mac = line.split()[2].lower()
             ret += [mac]
     return ret
 
@@ -32,6 +32,7 @@ def load_known():
         for line in f.readlines():
             line = line.rstrip("\r\n")
             mac, name = line.split("\t")
+            mac = mac.lower()
             ret[mac] = name
     return ret
 
