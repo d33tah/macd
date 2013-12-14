@@ -9,6 +9,13 @@ import collections
 import locale
 locale.setlocale(locale.LC_TIME, '')
 
+import gettext
+t = gettext.translation('macd', 'locale', fallback=True)
+_ = t.ugettext
+# xgettext -d macd -o macd.pot macd.py
+# msgfmt -o locale/pl/LC_MESSAGES/macd.mo macd.pot
+
+
 NETWORK = "172.16.1.1/24"
 OUTFILE = "index.html"
 INTERVAL = 60
@@ -41,9 +48,9 @@ def get_since_time(since, mac):
         since[mac] = time.localtime()
     since_time = since[mac]
     if time.strftime("%x") == time.strftime("%x", since_time):
-        return "(od %s)" % time.strftime("%H:%M", since_time)
+        return "(%s %s)" % (_("since"), time.strftime("%H:%M", since_time))
     else:
-        return "(od %s)" % time.strftime("%x %H:%M", since_time)
+        return "(%s %s)" % (_("since"), time.strftime("%x %H:%M", since_time))
 
 def write_macs(macs, known, since, filename=OUTFILE):
     with open(filename, "w") as f:
