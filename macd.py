@@ -37,6 +37,8 @@ def load_known():
     return ret
 
 def get_since_time(since, mac):
+    if mac not in since:
+        since[mac] = time.localtime()
     since_time = since[mac]
     if time.strftime("%x") == time.strftime("%x", since_time):
         return "(od %s)" % time.strftime("%H:%M", since_time)
@@ -62,7 +64,8 @@ def write_macs(macs, known, since, filename=OUTFILE):
 def cleanup_last_seen(macs, last_seen, since):
     for mac in set(macs + since.keys()):
         if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            del since[mac]
+            if mac in since:
+                del since[mac]
     for mac in macs:
         last_seen[mac] = time.time()
 
