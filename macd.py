@@ -81,7 +81,7 @@ def write_macs(macs, known, since, ignored, filename=OUTFILE):
             f.write("%s %s<br/>\n" % (name, since_msg))
             empty = False
         if empty:
-            f.write(_("Nobody was detected.\n"))
+            f.write(_("Nobody was detected."))
         f.write("</body>\n</html>")
 
 def cleanup_last_seen(macs, last_seen, since):
