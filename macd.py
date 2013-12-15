@@ -4,7 +4,6 @@
 import subprocess
 import time
 import logging
-import collections
 
 import locale
 locale.setlocale(locale.LC_TIME, '')
