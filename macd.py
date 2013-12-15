@@ -66,6 +66,7 @@ def get_since_time(since, mac):
 def write_macs(macs, known, since, ignored, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
+        f.write("<meta http-equiv=\"refresh\" content=\"%d\" />" % INTERVAL)
         f.write(time.strftime("%x %X<br/>\n<br/>\n"))
         empty = True
         for mac in set(macs + since.keys()):
