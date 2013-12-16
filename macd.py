@@ -67,7 +67,7 @@ def load_ignored():
     try:
         with open("ignored.txt") as f:
             for mac in f.readlines():
-                ret += [mac.rstrip("\r\n")]
+                ret += [mac.rstrip("\r\n").lower()]
     except IOError:
         pass
     return ret
