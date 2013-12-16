@@ -19,7 +19,7 @@ msgstr ""
 
 #: macd.py:61 macd.py:63
 msgid "since"
-msgstr ""
+msgstr "od"
 
 #: macd.py:84
 msgid "Nobody was detected."
