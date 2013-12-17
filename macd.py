@@ -73,8 +73,6 @@ def load_ignored():
     return ret
 
 def get_since_time(since, mac):
-    if mac not in since:
-        since[mac] = time.localtime()
     since_time = since[mac]
     if time.strftime("%x") == time.strftime("%x", since_time):
         return "(%s %s)" % (_("since"), time.strftime("%H:%M", since_time))
