@@ -80,7 +80,7 @@ def get_since_time(since, mac):
         return "(%s %s)" % (_("since"), time.strftime("%x %H:%M", since_time))
 
 def generate_report(macs, known, since, ignored):
-    ret = {'generated': time.localtime(), 'items': []}
+    ret = {'generated': time.strftime("%x %X"), 'items': []}
     empty = True
     for mac in set(macs + since.keys()):
         item = {}
@@ -112,8 +112,7 @@ def generate_html(report, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
         f.write("<meta http-equiv=\"refresh\" content=\"%d\" />" % INTERVAL)
-        f.write(time.strftime('<span class="generated">%x %X</span>\n',
-            report['generated']))
+        f.write('<span class="generated">%s</span>\n' % report['generated'])
         wrote_ul = False
         for item in report['items']:
             if not wrote_ul:
