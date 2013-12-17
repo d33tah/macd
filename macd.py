@@ -79,27 +79,50 @@ def get_since_time(since, mac):
     else:
         return "(%s %s)" % (_("since"), time.strftime("%x %H:%M", since_time))
 
-def write_macs(macs, known, since, ignored, filename=OUTFILE):
+def generate_report(macs, known, since, ignored):
+    ret = {'generated': time.localtime(), 'items': []}
+    empty = True
+    for mac in set(macs + since.keys()):
+        item = {}
+        if mac in ignored:
+            continue
+        item['name'] = known.get(mac, "%s(?)" % mac)
+        if mac not in macs:
+            item['name'] = "(!) " + item['name']
+        if mac not in since:
+            since[mac] = time.localtime()
+            item['since_msg'] = ""
+        else:
+            item['since_msg'] = get_since_time(since, mac)
+        item['since'] = since[mac]
+
+        found_later = False
+        for i in range(len(ret['items'])):
+            if ret['items'][i]['name'] != item['name']:
+                continue
+            if ret['items'][i]['since'] < since[mac]:
+                ret['items'][i] = item
+                found_later = True
+                break
+        if not found_later:
+            ret['items'] += [item]
+    return ret
+
+def generate_html(report, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
         f.write("<meta http-equiv=\"refresh\" content=\"%d\" />" % INTERVAL)
-        f.write(time.strftime("%x %X<br/>\n<br/>\n"))
-        empty = True
-        for mac in set(macs + since.keys()):
-            if mac in ignored:
-                continue
-            name = known.get(mac, "%s(?)" % mac)
-            if mac not in macs:
-                name = "(!) " + name
-            if mac not in since:
-                since[mac] = time.localtime()
-                since_msg = ""
-            else:
-                since_msg = get_since_time(since, mac)
-            f.write("%s %s<br/>\n" % (name, since_msg))
-            empty = False
-        if empty:
-            f.write(_("Nobody was detected."))
+        f.write(time.strftime("%x %X<br/>\n<br/>\n", report['generated']))
+        wrote_ul = False
+        for item in report['items']:
+            if not wrote_ul:
+                f.write("<ul>\n")
+                wrote_ul = True
+            f.write("<li>%s %s</li>\n" % (item['name'], item['since_msg']))
+        if wrote_ul:
+            f.write("</ul>\n")
+        if len(report['items']) == 0:
+            f.write('<p class="nobody">%s</p>' % _("Nobody was detected."))
         f.write("</body>\n</html>")
 
 def cleanup_last_seen(macs, last_seen, since):
@@ -121,7 +144,8 @@ def main():
         macs = get_macs(NETWORK)
         cleanup_last_seen(macs, last_seen, since)
         logging.info("%s" % macs)
-        write_macs(macs, known, since, ignored)
+        report = generate_report(macs, known, since, ignored)
+        generate_html(report)
         time.sleep(INTERVAL)
 
 if __name__ == "__main__":
