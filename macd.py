@@ -100,7 +100,7 @@ def generate_report(macs, known, since, ignored):
         for i in range(len(ret['items'])):
             if ret['items'][i]['name'] != item['name']:
                 continue
-            if ret['items'][i]['since'] < since[mac]:
+            if ret['items'][i]['since'] <= since[mac]:
                 ret['items'][i] = item
                 found_later = True
                 break
