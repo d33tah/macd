@@ -1,6 +1,9 @@
 import os
 # Django settings for macd project.
 
+import locale
+locale.setlocale(locale.LC_TIME, '')
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
