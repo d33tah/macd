@@ -8,4 +8,7 @@ def index(request):
     items = SeenEvent.objects.filter(date__gte=time_threshold)
     devices = set(item.mac.device.description for item in items
                   if not item.mac.device.ignored)
-    return render(request, 'macd/index.html', {'devices': devices})
+    return render(request, 'macd/index.html', {
+        'devices': devices,
+        'generated': datetime.datetime.now().strftime("%x %X")
+    })
