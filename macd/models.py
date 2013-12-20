@@ -5,10 +5,18 @@ class Device(models.Model):
     ignored = models.BooleanField()
 
     def __repr__(self):
-        return self.description.encode('utf-8')
+        ret = self.description.encode('utf-8')
+        if ret:
+            return ret
+        else:
+            return "%s (?)" % self.mac_set.all()[0]
 
     def __str__(self):
-        return self.description.encode('utf-8')
+        ret = self.description.encode('utf-8')
+        if ret:
+            return ret
+        else:
+            return "%s (?)" % self.mac_set.all()[0]
 
 class Mac(models.Model):
     mac = models.CharField(max_length=17, primary_key=True)
