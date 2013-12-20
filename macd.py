@@ -112,6 +112,7 @@ def generate_html(report, filename=OUTFILE):
     with open(filename, "w") as f:
         f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
         f.write("<meta http-equiv=\"refresh\" content=\"%d\" />" % INTERVAL)
+        f.write("</head><body>")
         f.write('<span class="generated">%s</span>\n' % report['generated'])
         wrote_ul = False
         for item in report['items']:
