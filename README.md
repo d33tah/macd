@@ -1,9 +1,9 @@
 macd
 ====
 
-An application I wrote for Fab Lab Łódź to keep track of who's in the building.
-It periodically ARP-pings the network and creates a document which lists names
-all the machines that responded.
+An application I wrote for Fab Lab Łódź hackerspace to keep track of who's in
+the building. It periodically ARP-pings the network and creates a document
+which lists names all the machines that responded.
 
 Usage
 =====
