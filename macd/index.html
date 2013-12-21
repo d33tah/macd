@@ -12,6 +12,8 @@
 <ul>
 {% for device in devices %}
 <li>{{ device }}</li>
+{% empty %}
+<p class="nobody">Nobody was detected.</p>
 {% endfor %}
 </ul>
 </body>
