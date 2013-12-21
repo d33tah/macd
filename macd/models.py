@@ -29,7 +29,8 @@ class Mac(models.Model):
         return self.mac
 
 class SeenEvent(models.Model):
-    ordering = ['date']
+    class Meta:
+        ordering = ['-date']
 
     mac = models.ForeignKey('Mac')
     date = models.DateTimeField()
