@@ -61,6 +61,7 @@ def register_macs(macs):
         macs = Mac.objects.filter(mac=mac_str)
         if len(macs) == 0:
             device = Device()
+            device.ignored = False
             device.save()
             mac = Mac()
             mac.device = device
