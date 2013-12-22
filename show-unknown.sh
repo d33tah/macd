@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Displays a list of unknown MAC addresses found in the macd.log.
+# Displays a list of unknown MAC addresses found in the macd.log, along with
+# the number of entries in the log and the MAC vendor. The list is sorted by
+# the number of entries.
 #
 # Usage:
 #
