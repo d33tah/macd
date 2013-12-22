@@ -6,11 +6,13 @@
 #
 # ./show-unknown.sh
 
-cat macd.log | \
-    tr "'" '\n' | \
-    grep '^..:..:..:..:..:..$' | \
-    tr 'A-Z' 'a-z' | \
-    uniq | \
-    sort | \
-    uniq | \
-    grep -vi -F -f <( awk '{ print $1}' < known.txt )
+for mac in `cat macd.log | \
+            tr "'" '\n' | \
+            grep '^..:..:..:..:..:..$' | \
+            tr 'A-Z' 'a-z' | \
+            uniq | \
+            sort | \
+            uniq | \
+            grep -vi -F -f <( awk '{ print $1}' < known.txt )`; do
+        echo "$mac: `grep $mac macd.log | wc -l`"
+    done | sort -n -k2 -r
