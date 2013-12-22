@@ -37,6 +37,7 @@ _ = t.ugettext
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "macd.settings")
 
+from django.utils import timezone
 from macd.models import Device, Mac, SeenEvent
 
 
@@ -72,7 +73,7 @@ def register_macs(macs):
             mac = macs[0]
         event = SeenEvent()
         event.mac = mac
-        event.date = datetime.datetime.now()
+        event.date = timezone.now()
         event.save()
 
 def main():
