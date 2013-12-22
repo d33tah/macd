@@ -1,4 +1,6 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 class Device(models.Model):
     description = models.CharField(max_length=30)
@@ -27,6 +29,10 @@ class Mac(models.Model):
 
     def __str__(self):
         return self.mac
+
+@receiver(pre_save, sender=Mac)
+def mac_save_handler(sender, instance, **kwargs):
+    instance.mac = instance.mac.lower().replace('-',':')
 
 class SeenEvent(models.Model):
     class Meta:
