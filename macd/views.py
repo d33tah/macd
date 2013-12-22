@@ -39,7 +39,9 @@ def index(request):
         device_str += earliest_since_str
         devices += [device_str]
 
+    last_event_time = SeenEvent.objects.latest('date').date
+
     return render(request, 'macd/index.html', {
         'devices': devices,
-        'generated': datetime.datetime.now().strftime("%x %X")
+        'last_event': timezone.localtime(last_event_time).strftime("%x %X"),
     })
