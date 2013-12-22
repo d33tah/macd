@@ -9,12 +9,14 @@
 </head>
 <body>
 <span class="generated">{{ generated }}</span>
+{% if devices %}
 <ul>
-{% for device in devices %}
-<li>{{ device }}</li>
-{% empty %}
+    {% for device in devices %}
+    <li>{{ device }}</li>
+    {% endfor %}
+{% else %}
 <p class="nobody">Nobody was detected.</p>
-{% endfor %}
+{% endif %}
 </ul>
 </body>
 </html>
