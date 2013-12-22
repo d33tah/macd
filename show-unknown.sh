@@ -14,5 +14,8 @@ for mac in `cat macd.log | \
             sort | \
             uniq | \
             grep -vi -F -f <( awk '{ print $1}' < known.txt )`; do
-        echo "$mac: `grep $mac macd.log | wc -l`"
+
+        MAC_NMAP=`echo $mac | tr a-z A-Z | tr -d ':' | cut -b1-6`
+        VENDOR=`grep $MAC_NMAP /usr/share/nmap/nmap-mac-prefixes`
+        echo -e "${mac}:\t`grep $mac macd.log | wc -l`\t$VENDOR"
     done | sort -n -k2 -r
