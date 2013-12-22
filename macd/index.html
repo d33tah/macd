@@ -1,4 +1,4 @@
-{% load i18n %}<html>
+{% load i18n %}{% load l10n %}<html>
 <head>
 <meta charset="utf-8"/>
 <title>mac {% if devices %}(!){% endif %} </title>
@@ -8,7 +8,7 @@
     type="image/x-icon" />
 </head>
 <body>
-<span class="last_event">{{ last_event }}</span>
+<span class="last_event">{{ last_event|localize }}</span>
 {% if devices %}
 <ul>
     {% for device in devices %}

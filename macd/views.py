@@ -43,5 +43,5 @@ def index(request):
 
     return render(request, 'macd/index.html', {
         'devices': devices,
-        'last_event': timezone.localtime(last_event_time).strftime("%x %X"),
+        'last_event': timezone.localtime(last_event_time)
     })
