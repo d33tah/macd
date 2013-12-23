@@ -22,6 +22,7 @@ names of all the machines that responded."""
 
 import subprocess
 import time
+import datetime
 import logging
 
 import locale
@@ -33,11 +34,15 @@ _ = t.ugettext
 # xgettext -d macd -o macd.pot macd.py
 # msgfmt -o locale/pl/LC_MESSAGES/macd.mo macd.pot
 
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "macd.settings")
+
+from django.utils import timezone
+from macd.models import Device, Mac, SeenEvent
+
 
 NETWORK = "172.16.1.1/24"
-OUTFILE = "index.html"
 INTERVAL = 60
-TIMEOUT = 60 * 5
 
 def get_macs(network, do_sudo=True):
     ret = []
@@ -52,101 +57,32 @@ def get_macs(network, do_sudo=True):
                 ret += [mac]
     return ret
 
-def load_known():
-    ret = {}
-    with open("known.txt") as f:
-        for line in f.readlines():
-            line = line.rstrip("\r\n")
-            mac, name = line.split("\t")
-            mac = mac.lower()
-            ret[mac] = name
-    return ret
-
-def load_ignored():
-    ret = []
-    try:
-        with open("ignored.txt") as f:
-            for mac in f.readlines():
-                ret += [mac.rstrip("\r\n").lower()]
-    except IOError:
-        pass
-    return ret
-
-def get_since_time(since, mac):
-    since_time = since[mac]
-    if time.strftime("%x") == time.strftime("%x", since_time):
-        return "(%s %s)" % (_("since"), time.strftime("%H:%M", since_time))
-    else:
-        return "(%s %s)" % (_("since"), time.strftime("%x %H:%M", since_time))
-
-def generate_report(macs, known, since, ignored):
-    ret = {'generated': time.strftime("%x %X"), 'items': []}
-    empty = True
-    for mac in set(macs + since.keys()):
-        item = {}
-        if mac in ignored:
-            continue
-        item['name'] = known.get(mac, "%s(?)" % mac)
-        if mac not in macs:
-            item['name'] = "(!) " + item['name']
-        if mac not in since:
-            since[mac] = time.localtime()
-            item['since_msg'] = ""
+def register_macs(macs):
+    for mac_str in macs:
+        macs = Mac.objects.filter(mac=mac_str)
+        if len(macs) == 0:
+            device = Device()
+            device.ignored = False
+            device.save()
+            mac = Mac()
+            mac.device = device
+            mac.mac = mac_str
+            mac.save()
         else:
-            item['since_msg'] = get_since_time(since, mac)
-        item['since'] = since[mac]
-
-        found_later = False
-        for i in range(len(ret['items'])):
-            if ret['items'][i]['name'] != item['name']:
-                continue
-            if ret['items'][i]['since'] <= since[mac]:
-                ret['items'][i] = item
-                found_later = True
-                break
-        if not found_later:
-            ret['items'] += [item]
-    return ret
-
-def generate_html(report, filename=OUTFILE):
-    with open(filename, "w") as f:
-        f.write("<html><head><meta charset=\"utf-8\"/><title>mac</title>")
-        f.write("<meta http-equiv=\"refresh\" content=\"%d\" />" % INTERVAL)
-        f.write("</head><body>")
-        f.write('<span class="generated">%s</span>\n' % report['generated'])
-        wrote_ul = False
-        for item in report['items']:
-            if not wrote_ul:
-                f.write("<ul>\n")
-                wrote_ul = True
-            f.write("<li>%s %s</li>\n" % (item['name'], item['since_msg']))
-        if wrote_ul:
-            f.write("</ul>\n")
-        if len(report['items']) == 0:
-            f.write('<p class="nobody">%s</p>' % _("Nobody was detected."))
-        f.write("</body>\n</html>")
-
-def cleanup_last_seen(macs, last_seen, since):
-    for mac in set(macs + since.keys()):
-        if mac in last_seen and time.time() - last_seen[mac] > TIMEOUT:
-            if mac in since:
-                del since[mac]
-    for mac in macs:
-        last_seen[mac] = time.time()
+            assert(len(macs) == 1)
+            mac = macs[0]
+        event = SeenEvent()
+        event.mac = mac
+        event.date = timezone.now()
+        event.save()
 
 def main():
     FORMAT = "%(asctime)-15s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
-    since = {}
-    last_seen = {}
     while True:
-        known = load_known()
-        ignored = load_ignored()
         macs = get_macs(NETWORK)
-        cleanup_last_seen(macs, last_seen, since)
         logging.info("%s" % macs)
-        report = generate_report(macs, known, since, ignored)
-        generate_html(report)
+        register_macs(macs)
         time.sleep(INTERVAL)
 
 if __name__ == "__main__":

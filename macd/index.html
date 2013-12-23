@@ -1,0 +1,30 @@
+{% load i18n %}{% load l10n %}<html>
+<head>
+<meta charset="utf-8"/>
+<title>mac {% if devices %}(!){% endif %} </title>
+<meta http-equiv="refresh" content="60" />
+<link rel="shortcut icon"
+    href="http://194.88.245.110/favicon.ico"
+    type="image/x-icon" />
+</head>
+<body>
+<span class="last_event">{{ last_event|localize }}</span>
+{% if devices %}
+<ul>
+    {% for device in devices %}
+    <li>
+        {% if device.leaving %}
+            (!)
+        {% endif %}
+        {{ device.name }}
+        {% if device.since %}
+            ({% trans "since" %} {{ device.since|date:"TIME_FORMAT" }})
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="nobody">{% trans "Nobody was detected." %}</p>
+{% endif %}
+</body>
+</html>
