@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
 class Device(models.Model):
-    description = models.CharField(max_length=30)
+    description = models.CharField(max_length=30, blank=True)
     ignored = models.BooleanField()
 
     def __repr__(self):
