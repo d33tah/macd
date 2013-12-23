@@ -12,7 +12,15 @@
 {% if devices %}
 <ul>
     {% for device in devices %}
-    <li>{{ device }}</li>
+    <li>
+        {% if device.leaving %}
+            (!)
+        {% endif %}
+        {{ device.name }}
+        {% if device.since %}
+            ({% trans "since" %} {{ device.since|date:"TIME_FORMAT" }})
+        {% endif %}
+    </li>
     {% endfor %}
 </ul>
 {% else %}

@@ -28,18 +28,12 @@ def index(request):
                     break
             if items_for_mac[0].date > two_minutes:
                 found_2min = True
-        if earliest_since:
-            earliest_since_local = timezone.localtime(earliest_since)
-            earliest_since_formatted = earliest_since_local.strftime("%X")
-            earliest_since_str = " (since %s)" % earliest_since_formatted
-        else:
-            earliest_since_str = ""
-        if found_2min:
-            device_str = str(device)
-        else:
-            device_str = "(!) %s" % str(device)
-        device_str += earliest_since_str
-        devices += [device_str]
+
+        devices += [{
+            'leaving': found_2min,
+            'name': str(device),
+            'since': timezone.localtime(earliest_since)
+        }]
 
     last_event_time = SeenEvent.objects.latest('date').date
 
