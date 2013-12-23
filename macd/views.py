@@ -29,7 +29,9 @@ def index(request):
             if items_for_mac[0].date > two_minutes:
                 found_2min = True
         if earliest_since:
-            earliest_since_str = " (since %s)" % earliest_since.strftime("%X")
+            earliest_since_local = timezone.localtime(earliest_since)
+            earliest_since_formatted = earliest_since_local.strftime("%X")
+            earliest_since_str = " (since %s)" % earliest_since_formatted
         else:
             earliest_since_str = ""
         if found_2min:
