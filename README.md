@@ -18,8 +18,10 @@ want to be scanned,
 TODO
 ====
 
-Investigate and fix the bug in the admin panel related to assingning an
+1. Investigate and fix the bug in the admin panel related to assingning an
 existing device to an automatically added MAC address.
+
+2. Create a mobile version of the website.
 
 Author, license
 ===============
