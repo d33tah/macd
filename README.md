@@ -15,6 +15,12 @@ MAC.
 want to be scanned,
 3. Run macd.py and point the user to the index.html file that macd generates.
 
+TODO
+====
+
+Investigate and fix the bug in the admin panel related to assingning an
+existing device to an automatically added MAC address.
+
 Author, license
 ===============
 
