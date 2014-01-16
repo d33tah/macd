@@ -17,17 +17,7 @@ class Device(models.Model):
             else:
                 return "%s (?)" % self.mac_set.all()[0]
 
-    def __str__(self):
-        ret = self.description.encode('utf-8')
-        if ret:
-            return ret
-        else:
-            macs = self.mac_set.all()
-            if not macs:
-                return "empty: %s" % self.id
-            else:
-                return "%s (?)" % self.mac_set.all()[0]
-
+    __str__ = __repr__
 
 class Mac(models.Model):
     mac = models.CharField(max_length=17, primary_key=True)
@@ -36,8 +26,8 @@ class Mac(models.Model):
     def __repr__(self):
         return self.mac
 
-    def __str__(self):
-        return self.mac
+    __str__ = __repr__
+
 
 @receiver(pre_save, sender=Mac)
 def mac_save_handler(sender, instance, **kwargs):
