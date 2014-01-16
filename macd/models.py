@@ -11,14 +11,23 @@ class Device(models.Model):
         if ret:
             return ret
         else:
-            return "%s (?)" % self.mac_set.all()[0]
+            macs = self.mac_set.all()
+            if not macs:
+                return "empty: %s" % self.id
+            else:
+                return "%s (?)" % self.mac_set.all()[0]
 
     def __str__(self):
         ret = self.description.encode('utf-8')
         if ret:
             return ret
         else:
-            return "%s (?)" % self.mac_set.all()[0]
+            macs = self.mac_set.all()
+            if not macs:
+                return "empty: %s" % self.id
+            else:
+                return "%s (?)" % self.mac_set.all()[0]
+
 
 class Mac(models.Model):
     mac = models.CharField(max_length=17, primary_key=True)
