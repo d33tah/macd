@@ -18,8 +18,7 @@ want to be scanned,
 TODO
 ====
 
-1. Investigate and fix the bug in the admin panel related to assingning an
-existing device to an automatically added MAC address.
+1. Make the admin panel more convenient.
 
 2. Create a mobile version of the website.
 
