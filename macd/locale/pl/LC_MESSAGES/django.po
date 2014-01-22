@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-23 11:45+0100\n"
+"POT-Creation-Date: 2014-01-22 22:44+0100\n"
 "PO-Revision-Date: 2013-12-22 16:23+0100\n"
 "Last-Translator: Jacek Wielemborek <d33tah@gmail.com>\n"
 "Language-Team: Jacek Wielemborek <d33tah@gmail.com>\n"
@@ -19,10 +19,33 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
-#: index.html:21
+#: index.html:12
+msgid "Warning!"
+msgstr "Uwaga!"
+
+#: index.html:14
+#, python-format
+msgid ""
+"\n"
+"        Your MAC address <strong>%(viewer_mac)s</strong> is not present in\n"
+"        the database yet. Please send an e-mail to the website "
+"administrator\n"
+"        containing your MAC address in order to add it to the database. It "
+"will\n"
+"        then be displayed with your name on the list below or ignored,\n"
+"        depending on your wish.\n"
+"        "
+msgstr ""
+"\n"
+"W bazie danych nie znaleziono Twojego adresu MAC: <strong>%(viewer_mac)s</"
+"strong>. Wyślij e-mail z adresem MAC do administratora tej strony, a "
+"zostanie on dodany do listy. Możesz wtedy zadecydować, czy ma on być tutaj "
+"wyświetlany, czy ignorowany."
+
+#: index.html:33
 msgid "since"
 msgstr "od"
 
-#: index.html:27
+#: index.html:39
 msgid "Nobody was detected."
 msgstr "Nikogo nie wykryto."

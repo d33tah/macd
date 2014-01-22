@@ -8,6 +8,18 @@
     type="image/x-icon" />
 </head>
 <body>
+{% if viewer_mac %}
+    <h1 class="mac_unknown_warning">{% trans "Warning!" %}</h1>
+    <p class="mac_unknown">
+        {% blocktrans %}
+        Your MAC address <strong>{{ viewer_mac }}</strong> is not present in
+        the database yet. Please send an e-mail to the website administrator
+        containing your MAC address in order to add it to the database. It will
+        then be displayed with your name on the list below or ignored,
+        depending on your wish.
+        {% endblocktrans %}
+    </p>
+{% endif %}
 <span class="last_event">{{ last_event|localize }}</span>
 {% if devices %}
 <ul>
