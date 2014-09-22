@@ -28,7 +28,12 @@
         {% if device.leaving %}
             (!)
         {% endif %}
-        {{ device.name }}
+
+        {% if device.vendor %}<span
+                                    style="border-bottom: 1px dotted;"
+                                    title="{{ device.vendor }}">{% endif %}
+        {{ device.name }}{% if device.vendor %}</span>{% endif %}
+
         {% if device.since %}
             ({% trans "since" %} {{ device.since|date:"TIME_FORMAT" }})
         {% endif %}

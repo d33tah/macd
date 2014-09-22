@@ -14,6 +14,7 @@ def index(request):
 
     devices = []
     two_minutes = now - datetime.timedelta(minutes=2)
+    macdb = open("/usr/share/nmap/nmap-mac-prefixes").readlines()
     for device in devices_set:
         found_2min = False
         earliest_since = None
@@ -30,10 +31,19 @@ def index(request):
             if items_for_mac[0].date > two_minutes:
                 found_2min = True
 
+        name = str(device)
+        vendor = ''
+        if name.endswith(" (?)") and len(name) == 21:
+            mac_name = name.upper().replace(":","")[:6]
+            vendor = [" ".join(i.split()[1:])
+                      for i in macdb
+                      if i.split()[0] == mac_name][0]
+
         devices += [{
             'leaving': found_2min,
-            'name': str(device),
-            'since': timezone.localtime(earliest_since)
+            'name': name,
+            'vendor': vendor,
+            'since': timezone.localtime(earliest_since) if earliest_since else ''
         }]
 
     last_event_time = SeenEvent.objects.latest('date').date
